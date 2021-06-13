@@ -16,7 +16,7 @@ console.log(user);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function getApple() {
-  await delay(1000);
+  await delay(2000);
   return "🍎";
 }
 async function getBanana() {
@@ -30,8 +30,10 @@ function getBanana() {
 */
 
 async function pickFruits() {
-  const apple = await getApple();
-  const banana = await getBanana();
+  const applePromise = getApple();
+  const bananaPromise = getBanana();
+  const apple = await applePromise;
+  const banana = await bananaPromise;
   return `${apple} + ${banana}`;
 }
 /*
@@ -43,3 +45,16 @@ async function pickFruits() {
  */
 
 pickFruits().then(console.log);
+
+// TODO: 3. useful Promise APIs
+function pickAllFruits() {
+  return Promise.all([getApple(), getBanana()]).then((fruits) =>
+    fruits.join(" + ")
+  );
+}
+pickAllFruits().then(console.log);
+
+function pickOnlyOne() {
+  return Promise.race([getApple(), getBanana()]);
+}
+pickOnlyOne().then(console.log);
